@@ -2,31 +2,33 @@
 def main():
     ex_1 = create_exercise(400, 5, 8, ex_name="squat")
     ex_2 = create_exercise(185, 5, 5, ex_name='bbell rows')
-    exercises = [ex_1, ex_2]
+    ex_3 = create_exercise(1500, 6, 12, ex_name='megaGIGA lift3')
+
+    exercises = [ex_1, ex_2, ex_3]
 
     workout = create_workout("test_workout", exercises)
+    # print(workout)
+    exercise = create_exercise(400, 5, 3, "test_exercise")
+    print(exercise)
+
+    # for name in workout.keys():
+    #     print(name)
+    #     print(workout[name])
+    print('workout')
     print(workout)
-    print()
-
-    for name in workout.keys():
-        print(name)
-        print(workout[name])
-
 
 def create_exercise(weight:int, reps:int, sets:int, ex_name: str = "unnamed"):
-    try: 
-        ex_name = str(ex_name)
-    except:
-        print('Exercise Name must be a string (e.g. "Bench Press", "AaBbCc123", ...')
+    ex_name = str(ex_name)
 
-    try:
-        assert(isinstance(weight, int) and isinstance(reps, int) and isinstance(sets, int))
-        exercise = {
-            "exercise_name": ex_name,
-            "expanded": {set_number+1:(weight, reps) for set_number in range(sets)}
+    # Check if weight, reps, and sets are integers
+    assert isinstance(weight, int), "Weight must be an integer."
+    assert isinstance(reps, int), "Reps must be an integer."
+    assert isinstance(sets, int), "Sets must be an integer."
+
+    exercise = {
+        "exercise_name": ex_name,
+        "expanded": {set_number+1:(weight, reps) for set_number in range(sets)}
         }
-    except AssertionError:
-        print('Weights, Reps, and Sets must be integer values')
 
     return exercise
 
@@ -39,7 +41,7 @@ def create_workout(workout_name: str, exercises:list):
         print('Workout must have a name and it must be a string (e.g. "MADCOW", "abc123", ...)')
 
     workout = {}
-    
+    workout['workout_name'] = workout_name
     for i, ex in enumerate(exercises):
         exercise_name = str(i) if ex['exercise_name'] == "unnamed" else ex['exercise_name']
         workout[exercise_name] = ex['expanded']    
@@ -53,7 +55,6 @@ def add_exercise(workout, exercise):
     workout[ex_name] = exercise['expanded']
     
     return workout
-
 
 if __name__ == '__main__':
     main()
